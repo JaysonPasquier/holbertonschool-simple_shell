@@ -1,42 +1,40 @@
+#include <stdio.h>
+#include <string.h>
 #include "main.h"
 
-/**
- * main - Entry point of the shell program
- *
- * This function implements a simple shell that continuously prompts the user
- * for input, processes the input, and executes commands.
- * It handles user input,
- * parses commands, and calls the `execute_command` function to process them.
- * The shell will exit when the user types "exit".
- *
- * Return: 0 on successful completion, exits with status 0 on exit command.
- */
+#define BUFFER_SIZE 1024
 
+/**
+ * main - Entry point for the shell program.
+ * Displays a shell prompt and executes commands entered by the user.
+ * Return: 0 on success, or exits with failure code on error.
+ */
 int main(void)
 {
-	char *cmd = NULL;
-	size_t len = 0;
+	char buffer[BUFFER_SIZE];
 
 	while (1)
 	{
-		write(STDOUT_FILENO, "#cisfun$ ", 9);
+		display_prompt();
 
-		if (getline(&cmd, &len, stdin) == -1)
-			break;
-
-		cmd[strcspn(cmd, "\n")] = '\0';
-
-		if (strcmp(cmd, "exit") == 0)
+		if (fgets(buffer, BUFFER_SIZE, stdin) == NULL)
 		{
-			free(cmd);
-			exit(0);
+			if (feof(stdin))
+			{
+				printf("\n");
+				break;
+			}
+			perror("fgets");
+			continue;
 		}
 
-		execute_command(cmd);
+		buffer[strcspn(buffer, "\n")] = '\0';
+		if (strlen(buffer) == 0)
+		{
+			continue;
+		}
 
-		free(cmd);
-		cmd = NULL;
-		len = 0;
+		execute_command(buffer);
 	}
 
 	return (0);

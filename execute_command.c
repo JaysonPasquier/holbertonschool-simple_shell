@@ -1,52 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <string.h>
 #include "main.h"
 
 /**
- * execute_command - Executes a command after parsing it
- * @cmd: The command to be executed
- *
- * This function parses the input command, checks if it's an absolute path,
- * or if it's found in the directories specified in `path_list`. It then
- * calls the `exec_with_path` function to execute the command.
+ * execute_command - Forks and executes a command.
+ * @buffer: Command entered by the user.
  */
-
-void execute_command(char *cmd)
+void execute_command(char *buffer)
 {
-	char *argv[MAX_ARGS];
-	char *token;
-	int argc = 0;
-	char *path_list[] = {
-		"/usr/local/sbin", "/usr/local/bin", "/usr/sbin", "/usr/bin", "/sbin",
-		"/bin",
-		NULL
-	};
-	int i, command_found = 0;
+	pid_t pid;
+	char *args[2];
 
-	token = strtok(cmd, " ");
-	while (token != NULL && argc < MAX_ARGS - 1)
-	{
-		argv[argc++] = token;
-		token = strtok(NULL, " ");
-	}
-	argv[argc] = NULL;
+	args[0] = buffer;
+	args[1] = NULL;
 
-	if (argv[0][0] == '/')
+	pid = fork();
+	if (pid < 0)
 	{
-		exec_with_path(argv[0], argv);
+		perror("fork");
 		return;
 	}
-	for (i = 0; path_list[i] != NULL; i++)
+	if (pid == 0)
 	{
-		char full_path[MAX_CMD_LEN];
-
-		snprintf(full_path, sizeof(full_path), "%s/%s", path_list[i], argv[0]);
-
-		if (access(full_path, X_OK) == 0)
-		{
-			command_found = 1;
-			exec_with_path(full_path, argv);
-			break;
-		}
+		execve(buffer, args, NULL);
+		perror("execve");
+		exit(EXIT_FAILURE);
 	}
-	if (!command_found)
-		fprintf(stderr, "%s: command not found\n", argv[0]);
+	waitpid(pid, NULL, 0);
 }
