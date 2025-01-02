@@ -112,8 +112,8 @@ access, chdir, close, closedir, execve, exit, _exit, fflush, fork, free, getcwd,
 
 ## Authors
 
-[JaysonPasquier](https://github.com/JaysonPasquier)
-[Enzo949494](https://github.com/Enzo949494)
+- [JaysonPasquier](https://github.com/JaysonPasquier)
+- [Enzo949494](https://github.com/Enzo949494)
 
 ## Acknowledgments
 
