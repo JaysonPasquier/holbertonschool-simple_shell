@@ -26,9 +26,13 @@ void free_all(char **tokens, char *path, char *line, char *fullpath, int flag)
  */
 void free_dp(char **array, unsigned int length)
 {
-	for (unsigned int i = 0; i < length; i++)
+	unsigned int i;
+
+	i = 0;
+	while (i < length)
 	{
 		free(array[i]);
+		i++;
 	}
 	free(array);
 }

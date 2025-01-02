@@ -7,30 +7,25 @@
  */
 void errors(int error)
 {
-	const char *error_message;
-
 	switch (error)
 	{
 	case 1:
-		error_message = ERR_FORK;
+		write(STDERR_FILENO, ERR_FORK, _strlen(ERR_FORK));
+		perror("Error");
 		break;
+
 	case 2:
 		perror("Error");
-		return;
+		break;
+
 	case 3:
-		error_message = ERR_MALLOC;
+		write(STDERR_FILENO, ERR_MALLOC, _strlen(ERR_MALLOC));
 		break;
 	case 4:
-		error_message = ERR_PATH;
+		write(STDERR_FILENO, ERR_PATH, _strlen(ERR_PATH));
 		break;
+
 	default:
 		return;
-	}
-
-	if (error != 2)
-	{
-		write(STDERR_FILENO, error_message, _strlen(error_message));
-		if (error == 1)
-			perror("Error");
 	}
 }

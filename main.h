@@ -50,7 +50,7 @@ char *_which(char *command, char *fullpath, char *path);
 int child(char *fullpath, char **tokens);
 void errors(int error);
 void _puts(char *str);
-int _strlen(const char *s);
+int _strlen(char *s);
 int _strcmp(char *name, char *variable, unsigned int length);
 int _strncmp(char *name, char *variable, unsigned int length);
 char *_strcpy(char *dest, char *src);

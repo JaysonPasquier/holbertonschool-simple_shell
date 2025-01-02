@@ -7,34 +7,43 @@
  */
 char *_getenv(const char *name)
 {
-	size_t name_len = _strlen((char *)name);
+	char *variable, *equal_sign, *value;
+	int compare;
+	unsigned int path_length, length, i;
+	char *path;
 
-	for (int i = 0; environ[i]; i++)
+	length = _strlen((char *)name);
+	i = 0;
+
+	while (environ[i] != NULL)
 	{
-		if (_strncmp((char *)name, environ[i], name_len) == 1)
+		variable = environ[i];
+		compare = _strncmp((char *)name, variable, length);
+		if (compare == 1)
 		{
-			char *equal_sign = strchr(environ[i], '=');
-
-			if (equal_sign)
+			equal_sign = strchr(variable, '=');
+			if (equal_sign != NULL)
 			{
-				char *value = equal_sign + 1;
+				value = equal_sign + 1;
 
-				if (*value == '\0')
+				if (value == NULL || *value == '\0')
 				{
 					errors(4);
 					exit(EXIT_FAILURE);
 				}
 
-				char *path = malloc(_strlen(value) + 1);
-
-				if (!path)
+				path_length = _strlen(value);
+				path = malloc(sizeof(char) * path_length + 1);
+				if (path == NULL)
 				{
 					errors(3);
 					return (NULL);
 				}
-				return (_strcpy(path, value));
+				path = _strcpy(path, value);
+				return (path);
 			}
 		}
+		i++;
 	}
 
 	return (NULL);

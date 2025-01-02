@@ -20,23 +20,25 @@ int main(void)
 			continue;
 		}
 		tokens = tokenizer(line);
-		if (!tokens[0])
+		if (tokens[0] == NULL)
 			continue;
 		builtin_status = builtin_execute(tokens);
 		if (builtin_status == 0 || builtin_status == -1)
 		{
 			free(tokens);
 			free(line);
-			if (builtin_status == -1)
-				_exit(EXIT_SUCCESS);
-			if (builtin_status == 0)
-				continue;
 		}
+		if (builtin_status == 0)
+			continue;
+		if (builtin_status == -1)
+			_exit(EXIT_SUCCESS);
+		flag = 0;
 		path = _getenv("PATH");
 		fullpath = _which(tokens[0], fullpath, path);
-		flag = (fullpath == NULL) ? 0 : 1;
-		if (!fullpath)
+		if (fullpath == NULL)
 			fullpath = tokens[0];
+		else
+			flag = 1;
 		child_status = child(fullpath, tokens);
 		if (child_status == -1)
 			errors(2);
