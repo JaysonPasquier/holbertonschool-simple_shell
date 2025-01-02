@@ -7,13 +7,10 @@
  */
 char *_getline(FILE *fp)
 {
-	char *line;
-	ssize_t read;
-	size_t len;
+	char *line = NULL;
+	size_t len = 0;
+	ssize_t read = getline(&line, &len, fp);
 
-	line = NULL;
-	len = 0;
-	read = getline(&line, &len, fp);
 	if (read == -1)
 	{
 		free(line);

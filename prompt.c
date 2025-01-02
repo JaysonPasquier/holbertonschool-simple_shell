@@ -7,9 +7,7 @@
 **/
 void prompt(int fd, struct stat buf)
 {
-	fstat(fd, &buf);
-
-	if (S_ISCHR(buf.st_mode))
+	if (fstat(fd, &buf) == 0 && S_ISCHR(buf.st_mode))
 		_puts(PROMPT);
 }
 
@@ -20,9 +18,5 @@ void prompt(int fd, struct stat buf)
  */
 void _puts(char *str)
 {
-	unsigned int length;
-
-	length = _strlen(str);
-
-	write(STDOUT_FILENO, str, length);
+	write(STDOUT_FILENO, str, _strlen(str));
 }
