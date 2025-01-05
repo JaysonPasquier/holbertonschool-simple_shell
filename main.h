@@ -11,7 +11,7 @@
 
 #define BUFFER 1024
 #define TRUE 1
-#define PROMPT "$ "
+#define PROMPT "#cisfun$ "
 #define ERR_MALLOC "Unable to malloc space\n"
 #define ERR_FORK "Unable to fork and create child process\n"
 #define ERR_PATH "No such file or directory\n"
