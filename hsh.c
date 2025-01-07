@@ -30,7 +30,7 @@ int main(void)
 		}
 		if (builtin_status == 0)
 			continue;
-		if (builtin_status == -1)
+		if (builtin_status == 2)
 			_exit(EXIT_SUCCESS);
 		flag = 0;
 		path = _getenv("PATH");
